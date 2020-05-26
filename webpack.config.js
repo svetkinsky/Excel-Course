@@ -9,11 +9,26 @@ const isDev = !isProd
 
 const filename = ext => isDev ? `bundle.${ext}` : `bundle.[hash].${ext}`
 
+const jsLoaders = () => {
+    const loaders = [
+        {
+            loader: 'babel-loader',
+            options: {
+                presets: ['@babel/preset-env']
+            }
+        }
+    ]
+    if (isDev) {
+        loaders.push('eslint-loader')
+    }
+    return loaders
+}
+
 
 module.exports = {
     context: path.resolve(__dirname, 'src'),
     mode: 'development',
-    entry: ['@babel/polyfill','./index.js'],
+    entry: ['@babel/polyfill', './index.js'],
     output: {
         filename: filename('js'),
         path: path.resolve(__dirname, 'dist')
@@ -34,8 +49,8 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: 'index.html',
             minify: {
-                removeComments : isProd,
-                collapseWhitespace : isProd
+                removeComments: isProd,
+                collapseWhitespace: isProd
             }
         }),
         new CopyPlugin({
@@ -69,12 +84,7 @@ module.exports = {
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
-                loader: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/preset-env']
-                    }
-                }
+                use: jsLoaders()
             }
         ],
     }
