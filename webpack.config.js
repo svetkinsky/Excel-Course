@@ -41,7 +41,7 @@ module.exports = {
             '@core': path.resolve(__dirname, 'src/core')
         }
     },
-    devtool: isDev ? 'source-map' : false,
+    devtool: isDev ? 'source-map' : '',
     devServer: {
         port: 3000
     },
